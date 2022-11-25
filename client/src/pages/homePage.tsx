@@ -23,7 +23,7 @@ const HomePage = () => {
       <div className="flex flex-row gap-5 flex-wrap justify-center">
       {characters && characters.map((character) => {
         return (
-          <div key={character.id} onClick={(() => {navigate(`/${character.id}`)})}>
+          <div key={character.id} onClick={(() => {navigate(`/character/${character.id}`)})}>
             <div>{character.name}</div>
             <div>{character.species}</div>
             <img src={character.image} alt={character.name} /> 

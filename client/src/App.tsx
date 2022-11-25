@@ -8,7 +8,7 @@ export function App() {
   return (
     <Routes>
       <Route path='/' element={<HomePage />} />
-      <Route path='/:id' element={<Character />} />
+      <Route path='/character/:id' element={<Character />} />
     </Routes>
   );
 }
