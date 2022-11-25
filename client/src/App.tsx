@@ -1,9 +1,15 @@
-import React from "react";
 
-function App() {
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Character from "./pages/character";
+import HomePage from "./pages/homePage";
+
+export function App() {
   return (
-    <div>qwe
-    </div>
+    <Routes>
+      <Route path='/' element={<HomePage />} />
+      <Route path='/:id' element={<Character />} />
+    </Routes>
   );
 }
 
