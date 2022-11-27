@@ -1,24 +1,25 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { RICK_AND_MORTY_URL } from "~/api-client/urls";
 
 const Character = () => {
   const { id } = useParams()
   const [character, setCharacter] = useState(null)
   const [location, setLocation] = useState(null)
-  const api = `https://rickandmortyapi.com/api`
+
+  const getOneCharacter =  async () => {
+    const respCharacater = await axios.get(`${RICK_AND_MORTY_URL}/character/${id}`);
+    await setCharacter([respCharacater.data])
+    const locationNumber = respCharacater.data.location.url.substring(respCharacater.data.location.url.indexOf('/location/') + 10);
+    const respLocation = await axios.get(`${RICK_AND_MORTY_URL}/location/${+locationNumber}`);
+    setLocation(respLocation.data)
+  }
   
   useEffect(() => {
     getOneCharacter()
   },[])
 
-  const getOneCharacter =  async () => {
-    const respCharacater = await axios.get(`${api}/character/${id}`);
-    await setCharacter([respCharacater.data])
-    const locationNumber = respCharacater.data.location.url.substring(respCharacater.data.location.url.indexOf('/location/') + 10);
-    const respLocation = await axios.get(`${api}/location/${+locationNumber}`);
-    setLocation(respLocation.data)
-  }
   return (
     <div>
       {character && location &&  character.map((character) => {

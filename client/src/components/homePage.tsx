@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { RICK_AND_MORTY_URL } from "~/api-client/urls";
 
 const HomePage = () => {
   const [characters, setCharacters] = useState(null)
-  const [pagesCount, setPagesCount] = useState(null)
-  const api = `https://rickandmortyapi.com/api`
+  const [pagesCount, setPagesCount] = useState(null)   
   
   useEffect(() => {
     getAllCharacters();
@@ -14,7 +14,7 @@ const HomePage = () => {
   const navigate = useNavigate()
 
   const getAllCharacters =  async () => {
-    const resp = await axios.get(`${api}/character`);
+    const resp = await axios.get(`${RICK_AND_MORTY_URL}/character`);
     await setPagesCount(resp.data.info.pages)
     await setCharacters(resp.data.results)
   }
