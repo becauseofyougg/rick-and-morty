@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { RICK_AND_MORTY_URL } from './urls';
+import urls from './urls';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     getAllCharacters: async () => {
-        const resp = await axios.get(`${RICK_AND_MORTY_URL}`);
+        const resp = await axios.get(`${urls.RICK_AND_MORTY_URL}/character`);
         return resp
       },
 }
