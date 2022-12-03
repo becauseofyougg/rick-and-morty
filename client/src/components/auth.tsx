@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import apiReqs from '../api-client/api-reqs';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { userStore } from '../stores';
 import Button from './button';
 
 // import { sendReqQustion } from '../api-client/axios';
@@ -12,8 +12,7 @@ type Props = {
 };
 
 const Auth: React.FC<Props> = ({ setShowModal, isAccount, className }) => {
-  
-  
+  const navigate = useNavigate();  
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [text, setText] = useState('');
@@ -93,11 +92,11 @@ const Auth: React.FC<Props> = ({ setShowModal, isAccount, className }) => {
     setTextDirty(true);
   };
   const registration = async () => {
-    const res = await apiReqs.registration(email,password,text)
+    const res = await userStore.register(email,password,text)
     checked && sessionStorage.setItem('token', res.data.accessToken)
   }
   const login = async () => {
-    const res = await apiReqs.login(email,password)
+    const res = await userStore.login(email,password)
     checked && sessionStorage.setItem('token', res.data.accessToken)
   }
 
@@ -107,7 +106,9 @@ const Auth: React.FC<Props> = ({ setShowModal, isAccount, className }) => {
     try {
       isSignup 
       ? registration()
-      : login()      
+      : login()
+      let path = `/`; 
+      navigate(path);   
     } catch (error) {
       console.log(error)
     } finally {

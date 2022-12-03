@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { userStore } from '../stores';
 import apiReqs from '../api-client/api-reqs';
 import Button from './button';
+import {observer} from 'mobx-react';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate(); 
@@ -21,7 +23,7 @@ const Navbar: React.FC = () => {
     sessionStorage.getItem('token')
   },[]) 
 
-  const isAuth = false
+  
   return (
       <nav
         className={`sticky z-40 shadow-md w-full flex justify-center absolute top-0 left-0 select-none bg-white`}
@@ -30,7 +32,7 @@ const Navbar: React.FC = () => {
           <div
             className="md:h-full w-full flex justify-between md:justify-end items-center"
           > 
-          {!isAuth ? (
+          {!userStore.isAuth ? (
             <div className='flex gap-5 mr-10'>
               <Button text={'Signup'} children={undefined} onClick={goToSignup} />
               <Button text={'Login'} children={undefined} onClick={goToLogin} />
@@ -70,4 +72,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default observer(Navbar);

@@ -4,7 +4,7 @@ import urls from "./urls";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    registration(email: string, password: string, text: string):Promise<AxiosResponse> {
+    register(email: string, password: string, text: string):Promise<AxiosResponse> {
         return $api.post('/registration', { email, password,text })
     },
     login(email: string, password: string):Promise<AxiosResponse> {
