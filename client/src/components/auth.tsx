@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
 import Button from './button';
 
-// import { sendReqQustion } from '../api-client/axios';
-
 type Props = {
   setShowModal?: any;
   isAccount?: boolean;
@@ -184,9 +182,9 @@ const Auth: React.FC<Props> = ({ setShowModal, isAccount, className }) => {
         </form>
         <label>
           <input type="checkbox" checked={checked} onChange={handleCheck}/>
-            Remember me
+            <span className='ml-4'>Remember me</span>
         </label>
-        <Button onClick={handleSubmit} text={isSignup ? 'Sign up' : 'Log in'} children={undefined}/>
+        <Button onClick={handleSubmit} text={isSignup ? 'Sign up' : 'Log in'} />
       </div>   
     </div>
     </div>

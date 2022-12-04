@@ -1,26 +1,31 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
-import apiReqs from '../api-client/api-reqs';
 import Button from './button';
 import {observer} from 'mobx-react';
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
   const goToSignup =  () => {
     let path = `/auth?page=signup`; 
     navigate(path);
   }
+
   const goToLogin =  () => {
     let path = `/auth?page=login`; 
     navigate(path);
   }
+
   const logOut = async () => {
-    await apiReqs.logout()
+    await userStore.logout()
   }
 
   useEffect(() => {
-    sessionStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
+    if(token) {
+      userStore.setAuth(true)
+    }
   },[]) 
 
   
@@ -34,40 +39,18 @@ const Navbar: React.FC = () => {
           > 
           {!userStore.isAuth ? (
             <div className='flex gap-5 mr-10'>
-              <Button text={'Signup'} children={undefined} onClick={goToSignup} />
-              <Button text={'Login'} children={undefined} onClick={goToLogin} />
+              <Button text={'Signup'} onClick={goToSignup} />
+              <Button text={'Login'} onClick={goToLogin} />
             </div>
           ) : (
             <div className='flex gap-5 mr-10 items-center'>
-              <p>qweqwewqewq</p>
-              <Button text={'Logout'} children={undefined} onClick={logOut} />
+              <p>{userStore.user?.email}</p>
+              <Button text={'Logout'} onClick={logOut} />
             </div>
                 
           )}
-          </div>
-         
-          </div>
-            <>
-              <div
-                className="hidden md:flex justify-between 
-                   relative right-[104px]"
-                   >
-                  <div>
-                    <div className="md:pt-0 md:pb-0 w-full md:h-full items-center flex md:flex-row flex-col justify-between md:justify-end md:flex">
-                    </div>
-                  </div>
-              </div>
-              <div className="md:hidden">                
-                  <div className="md:pt-0 md:pb-0 w-full md:h-full items-center flex md:flex-row flex-col justify-between md:justify-end md:flex">                    
-                      <>
-                          <div >About</div>
-                          <div className={`lg:mx-[30px] md:mx-[30px]`}>
-                            How it works
-                          </div>       
-                      </>                    
-                  </div>
-                </div>
-              </>
+          </div>         
+          </div>            
       </nav>
   );
 };
