@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
 import Button from './button';
@@ -6,6 +6,8 @@ import {observer} from 'mobx-react';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const [showBio, setShowBio] = useState(false)
+  const [bio, setBio] = useState('')
 
   const goToSignup =  () => {
     let path = `/auth?page=signup`; 
@@ -22,10 +24,8 @@ const Navbar: React.FC = () => {
   }
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token')
-    if(token) {
-      userStore.setAuth(true)
-    }
+    const sesStoreBio = sessionStorage.getItem('bio')
+    setBio(sesStoreBio)
   },[]) 
 
   
@@ -36,7 +36,12 @@ const Navbar: React.FC = () => {
         <div className="w-full md:h-20 py-6 flex md:flex-row flex-col justify-between z-40">
           <div
             className="md:h-full w-full flex justify-between md:justify-end items-center"
-          > 
+          >
+            {bio !== null && <Button text={'Your bio'} onClick={() => setShowBio(prev => !prev)} />}          
+                {showBio && <div className="block p-6 rounded-lg shadow-lg bg-white">
+                  {bio}
+                </div>}
+         
           {!userStore.isAuth ? (
             <div className='flex gap-5 mr-10'>
               <Button text={'Signup'} onClick={goToSignup} />
@@ -44,7 +49,7 @@ const Navbar: React.FC = () => {
             </div>
           ) : (
             <div className='flex gap-5 mr-10 items-center'>
-              <p>{userStore.user?.email}</p>
+              <p>{sessionStorage.getItem("email")}</p>
               <Button text={'Logout'} onClick={logOut} />
             </div>
                 

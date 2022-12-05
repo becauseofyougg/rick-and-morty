@@ -32,10 +32,13 @@ export default class UserStore {
             console.log(error)
         }
     }
+
     @action async logout() {
         try {
             await apiReqs.logout()
             sessionStorage.removeItem('token')
+            sessionStorage.removeItem('email')
+            sessionStorage.removeItem('bio')
             this.setAuth(false)
             this.setUser({})
         } catch (error) {
@@ -58,7 +61,7 @@ export default class UserStore {
     @action async checkAuth() {
         try {
             const response = await axios.get(`${urls.API_URL}/refresh`, {withCredentials: true})
-            console.log(response)
+            console.log(response,'resp')
             sessionStorage.setItem('token', response.data.accessToken)
             this.setAuth(true)
             this.setUser(response.data.user)

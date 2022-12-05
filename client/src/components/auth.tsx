@@ -3,13 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
 import Button from './button';
 
-type Props = {
-  setShowModal?: any;
-  isAccount?: boolean;
-  className?: string;
-};
-
-const Auth: React.FC<Props> = ({ setShowModal, isAccount, className }) => {
+const Auth: React.FC = () => {
   const navigate = useNavigate();  
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -91,11 +85,17 @@ const Auth: React.FC<Props> = ({ setShowModal, isAccount, className }) => {
   };
   const registration = async () => {
     const res = await userStore.register(email,password,text)
-    checked && sessionStorage.setItem('token', res.data.accessToken)
+    if(checked) {
+      sessionStorage.setItem('email', res.data.user.email)
+      sessionStorage.setItem('bio', res.data.user.bio)
+    }
   }
   const login = async () => {
     const res = await userStore.login(email,password)
-    checked && sessionStorage.setItem('token', res.data.accessToken)
+    if(checked) {
+      sessionStorage.setItem('email', res.data.user.email)
+      sessionStorage.setItem('bio', res.data.user.bio)
+    }
   }
 
   const handleSubmit = async (e: any) => {
