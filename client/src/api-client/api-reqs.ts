@@ -4,8 +4,8 @@ import urls from "./urls";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    register(email: string, password: string, text: string):Promise<AxiosResponse> {
-        return $api.post('/registration', { email, password,text })
+    register(email: string, password: string, bio: string):Promise<AxiosResponse> {
+        return $api.post('/registration', { email, password, bio })
     },
     login(email: string, password: string):Promise<AxiosResponse> {
         return $api.post('/login', {email, password})
@@ -16,5 +16,9 @@ export default {
     getAllCharacters: async () => {
         const resp = await axios.get(`${urls.RICK_AND_MORTY_URL}/character`);
         return resp
-      },
+    },
+    getPageWithCharacters: async (pageUrl) => {
+        const resp = await axios.get(`${pageUrl}`);
+        return resp
+    }
 }

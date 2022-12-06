@@ -7,6 +7,7 @@ import apiReqs from "../api-client/api-reqs";
 export default class UserStore {
     @observable user = {} as IUser;
     @observable isAuth = false;
+    @observable isLoading = false;
 
     constructor () {
         makeAutoObservable(this)
@@ -20,10 +21,14 @@ export default class UserStore {
         this.user = user;
     }
 
+    @action toggleLoader(state: boolean) {
+        this.isLoading = state;
+    }
+
     @action async login(email: string, password: string) {
         try {
             const response = await apiReqs.login(email, password)
-            sessionStorage.setItem('token', response.data.accessToken)
+            localStorage.setItem('token', response.data.accessToken)
             this.setAuth(true)
             this.setUser(response.data.user)
             console.log(response)
@@ -36,7 +41,7 @@ export default class UserStore {
     @action async logout() {
         try {
             await apiReqs.logout()
-            sessionStorage.removeItem('token')
+            localStorage.removeItem('token')
             sessionStorage.removeItem('email')
             sessionStorage.removeItem('bio')
             this.setAuth(false)
@@ -59,14 +64,16 @@ export default class UserStore {
     }
 
     @action async checkAuth() {
+        this.toggleLoader(true)
         try {
             const response = await axios.get(`${urls.API_URL}/refresh`, {withCredentials: true})
-            console.log(response,'resp')
-            sessionStorage.setItem('token', response.data.accessToken)
+            localStorage.setItem('token', response.data.accessToken)
             this.setAuth(true)
             this.setUser(response.data.user)
         } catch (error) {
             console.log(error)
+        } finally {
+            this.toggleLoader(false)
         }
     }
 }

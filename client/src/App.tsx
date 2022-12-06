@@ -8,8 +8,9 @@ import HomePage from "./components/homePage";
 import { userStore } from "./stores";
 
 export function App() {
+  
   useEffect(() => {
-    if(sessionStorage.getItem('token')){
+    if(localStorage.getItem('token')){
       userStore.checkAuth()
     }
   }, [])

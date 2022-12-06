@@ -11,11 +11,15 @@ const Character = () => {
   const [location, setLocation] = useState(null)
 
   const getOneCharacter =  async () => {
+    try {
     const respCharacater = await axios.get(`${urls.RICK_AND_MORTY_URL}/character/${id}`);
     await setCharacter([respCharacater.data])
     const locationNumber = respCharacater.data.location.url.substring(respCharacater.data.location.url.indexOf('/location/') + 10);
     const respLocation = await axios.get(`${urls.RICK_AND_MORTY_URL}/location/${+locationNumber}`);
     setLocation(respLocation.data)
+  } catch (error) {
+    console.log(error)
+  }
   }
   
   useEffect(() => {

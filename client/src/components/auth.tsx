@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
@@ -11,9 +12,9 @@ const Auth: React.FC = () => {
   const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
   const [textDirty, setTextDirty] = useState(false);
-  const [emailError, setEmailError] = useState('valid.field');
-  const [passwordError, setPasswordError] = useState('valid.field');
-  const [textError, setTextError] = useState('valid.field');
+  const [emailError, setEmailError] = useState('invalid field');
+  const [passwordError, setPasswordError] = useState('invalid field');
+  const [textError, setTextError] = useState('invalid field');
   const [checked, setChecked] = React.useState(false);
 
   const handleCheck = () => {
@@ -84,18 +85,37 @@ const Auth: React.FC = () => {
     setTextDirty(true);
   };
   const registration = async () => {
+    try{
     const res = await userStore.register(email,password,text)
     if(checked) {
       sessionStorage.setItem('email', res.data.user.email)
       sessionStorage.setItem('bio', res.data.user.bio)
     }
-  }
-  const login = async () => {
-    const res = await userStore.login(email,password)
-    if(checked) {
-      sessionStorage.setItem('email', res.data.user.email)
-      sessionStorage.setItem('bio', res.data.user.bio)
+    if(res.status) {
+      let path = `/`; 
+      await navigate(path); 
     }
+  } catch (error) {
+    console.log(error)
+  }
+
+  }
+
+  const login = async () => {
+    try {
+      const res = await userStore.login(email,password)
+      if(checked) {
+        sessionStorage.setItem('email', res.data.user.email)
+        sessionStorage.setItem('bio', res.data.user.bio)
+      }
+      if(res.status) {
+        let path = `/`; 
+        await navigate(path); 
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   const handleSubmit = async (e: any) => {
@@ -103,15 +123,13 @@ const Auth: React.FC = () => {
     checkSubmit()
     try {
       isSignup 
-      ? registration()
-      : login()
-      let path = `/`; 
-      navigate(path);   
+      ? await registration()
+      : await login()  
     } catch (error) {
       console.log(error)
     } finally {
-      resetForm();
-    }    
+      resetForm()
+    }
   };
 
   return (
@@ -191,4 +209,4 @@ const Auth: React.FC = () => {
   );
 };
 
-export default Auth;
+export default observer(Auth);

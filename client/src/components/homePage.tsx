@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import apiReqs from "../api-client/api-reqs";
 import Navbar from "./navbar";
 import Pagination from "./pagination";
 
@@ -8,50 +8,45 @@ const HomePage = () => {
   const [characters, setCharacters] = useState(null)
   const navigate = useNavigate()
 
-  const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams({});
-  const [isPrev, setIsPrev] = useState(false)
-  const [isNext, setIsNext] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isPrev, setIsPrev] = useState<string>('')
+  const [isNext, setIsNext] = useState<string>('')
 
-  const [currentPage, setCurrentPage] = React.useState(
-    +searchParams.get("page")
-  );
 
-  const getAllCharacters =  async () => {
-    const resp  = await axios.get(`https://rickandmortyapi.com/api/character/?${searchParams}`)
-    if(resp.data.info.next) {
-      setIsNext(true)
-    }
-    if(resp.data.info.prev) {
-      setIsPrev(true)
-    }
-    console.log(resp)
+  const setPageData = async (resp) => {
+    setIsNext(resp.data.info.next)
+    setIsPrev(resp.data.info.prev)
     await setCharacters(resp.data.results)
   }
+  const getAllCharacters =  async () => {
+    try{
+    const resp  = await apiReqs.getAllCharacters()   
+    setPageData(resp)
+  } catch (error) {
+    console.log(error)
+  }
 
-  const checkSearchParams = () => {
-    const prevPage = `page=2`
-    if(currentPage === 0) {
-      setSearchParams(prevPage)
-    } 
   }
 
   const goToPrevPage = async () => {
-      checkSearchParams()
-      setCurrentPage(prev => --prev)
-      const prevPage = `page=${currentPage}`
-      setSearchParams(prevPage)
-      await getAllCharacters()
-  }
-  const goToNextPage = async () => {
-      checkSearchParams()
-      setCurrentPage(prev => ++prev)
-      const nextPage = `page=${currentPage}`
-      setSearchParams(nextPage)
-      await getAllCharacters()
+    try{
+    const resp  = await apiReqs.getPageWithCharacters(isPrev)
+    setPageData(resp)
+  } catch (error) {
+    console.log(error)
   }
 
-  useEffect(() => {
+  }
+  const goToNextPage = async () => {
+    try{
+    const resp = await apiReqs.getPageWithCharacters(isNext)
+    setPageData(resp)
+  } catch (error) {
+    console.log(error)
+  }
+  }
+
+  useEffect( () => {
     setLoading(true)
     try {      
       getAllCharacters();
@@ -64,7 +59,7 @@ const HomePage = () => {
 
 
   return (
-    <div className="">
+    <>
       <Navbar />
       <div className="flex flex-row gap-5 flex-wrap justify-center py-10">
         {(loading || !characters) ? <h2>Loading ...</h2> : (
@@ -82,9 +77,9 @@ const HomePage = () => {
         )}
         </div>
       {!(loading || !characters) && 
-        <Pagination goToPrevPage={goToPrevPage} goToNextPage={goToNextPage} isPrev={isPrev} isNext={isNext}/>
+        <Pagination goToPrevPage={goToPrevPage} goToNextPage={goToNextPage} isPrev={!!isPrev} isNext={!!isNext}/>
       }
-    </div>
+    </>
 
   );
 }

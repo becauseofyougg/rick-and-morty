@@ -27,20 +27,22 @@ const Navbar: React.FC = () => {
     const sesStoreBio = sessionStorage.getItem('bio')
     setBio(sesStoreBio)
   },[]) 
-
-  
+    
   return (
       <nav
         className={`sticky z-40 shadow-md w-full flex justify-center absolute top-0 left-0 select-none bg-white`}
       >
         <div className="w-full md:h-20 py-6 flex md:flex-row flex-col justify-between z-40">
           <div
-            className="md:h-full w-full flex justify-between md:justify-end items-center"
+            className="md:h-full w-full flex gap-10 justify-between md:justify-end items-center relative"
           >
-            {bio !== null && <Button text={'Your bio'} onClick={() => setShowBio(prev => !prev)} />}          
-                {showBio && <div className="block p-6 rounded-lg shadow-lg bg-white">
-                  {bio}
+            {userStore.user.email != null && (<span>Your name is {userStore.user?.email?.split('@')[0]}</span>)}
+            {sessionStorage.getItem('bio') !== null && <Button text={'Your bio'} onClick={() => setShowBio(prev => !prev)}>
+            {showBio && <div className="p-6 rounded-lg shadow-lg bg-white absolute top-16 w-[160px] break-words">
+                  <span className='text-black'>{bio}</span>
                 </div>}
+              </Button>}          
+
          
           {!userStore.isAuth ? (
             <div className='flex gap-5 mr-10'>

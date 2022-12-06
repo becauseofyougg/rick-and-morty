@@ -31,7 +31,7 @@ class UserService {
         }
         const userDto = new UserDto(personToLogin)
         const tokens = tokenService.generateToken({ ...userDto})
-        await tokenService.saveToken(userDto.id , tokens.refreshToken)
+        await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
         return {
             ...tokens, user: userDto
@@ -45,7 +45,7 @@ class UserService {
         if(!refreshToken) {
             throw ApiError.UnauthorizedError()
         }
-        const userData = tokenService.verifyAccessToken(refreshToken)
+        const userData = tokenService.verifyRefreshToken(refreshToken)
         const tokenDB = await tokenService.findToken(refreshToken)
         if (!userData || !tokenDB) {
             throw ApiError.UnauthorizedError()

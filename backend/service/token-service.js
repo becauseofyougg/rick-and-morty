@@ -27,7 +27,7 @@ class TokenService {
         const tokenData = await tokenModel.findOne({refreshToken})
         return tokenData
     }
-    async verifyAccessToken(){
+    verifyAccessToken(token) {
         try {
             const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
             return userData
@@ -35,7 +35,7 @@ class TokenService {
             return null
         }
     }
-    async verifyRefreshToken(){
+    verifyRefreshToken(token){
         try {
             const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET)
             return userData
