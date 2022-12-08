@@ -15,7 +15,7 @@ const Auth: React.FC = () => {
   const [emailError, setEmailError] = useState('invalid field');
   const [passwordError, setPasswordError] = useState('invalid field');
   const [textError, setTextError] = useState('invalid field');
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState(false);
 
   const handleCheck = () => {
     setChecked(!checked);
@@ -84,6 +84,7 @@ const Auth: React.FC = () => {
     setEmailDirty(true);
     setTextDirty(true);
   };
+
   const registration = async () => {
     try{
     const res = await userStore.register(email,password,text)
@@ -98,7 +99,6 @@ const Auth: React.FC = () => {
   } catch (error) {
     console.log(error)
   }
-
   }
 
   const login = async () => {
@@ -171,13 +171,13 @@ const Auth: React.FC = () => {
                 }  ${passwordError !== '' && passwordDirty ? 'text-red-500' : ''}`}
                 placeholder={'Enter password'}
               />
-              <div className="text-xs font-normal text-red-600 h-8 mt-1">
+              <div className="text-lg text-red-600 h-8 mt-1">
                 {passwordDirty && passwordError && passwordError}
               </div>
             </div>
 
             {isSignup && <div
-              className={`rounded md:mb-[25px] sm:mb-[30px] mt-5 w-full flex-col `}
+              className={`rounded md:mb-[24px] sm:mb-[30px] mt-5 w-full flex-col `}
             >
               <label className="text-gray-700">{'Biography'}</label>
               <textarea
@@ -191,12 +191,12 @@ const Auth: React.FC = () => {
                 rows={6}
                 placeholder={'Tell us about yourself'}
               />
-              <div className="text-xs font-normal text-red-600 h-8">
+              <div className="text-lg text-red-600 h-8">
                 {emailDirty && textError && textError}
               </div>
             </div>}
           </div>
-            
+            <div className="text-lg text-red-600 h-8">{userStore.authError}</div>
         </form>
         <label>
           <input type="checkbox" checked={checked} onChange={handleCheck}/>

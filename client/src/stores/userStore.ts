@@ -8,6 +8,7 @@ export default class UserStore {
     @observable user = {} as IUser;
     @observable isAuth = false;
     @observable isLoading = false;
+    @observable authError = '';
 
     constructor () {
         makeAutoObservable(this)
@@ -15,6 +16,10 @@ export default class UserStore {
 
     @action setAuth(isUserAuth: boolean) {
         this.isAuth = isUserAuth;
+    }
+
+    @action setAuthError(data: string) {
+        this.authError = data;
     }
 
     @action setUser(user) {
@@ -31,10 +36,9 @@ export default class UserStore {
             localStorage.setItem('token', response.data.accessToken)
             this.setAuth(true)
             this.setUser(response.data.user)
-            console.log(response)
             return response
         } catch (error) {
-            console.log(error)
+            this.setAuthError(error.response.data.message)
         }
     }
 
@@ -47,7 +51,7 @@ export default class UserStore {
             this.setAuth(false)
             this.setUser({})
         } catch (error) {
-            console.log(error.response.data.message)
+            this.setAuthError(error.response.data.message)
         }
     }
 
@@ -59,7 +63,7 @@ export default class UserStore {
             this.setUser(response.data.user)
             return response
         } catch (error) {
-            console.log(error.response.data.message)
+            this.setAuthError(error.response.data.message)
         }
     }
 
@@ -71,7 +75,7 @@ export default class UserStore {
             this.setAuth(true)
             this.setUser(response.data.user)
         } catch (error) {
-            console.log(error)
+            this.setAuthError(error.response.data.message)
         } finally {
             this.toggleLoader(false)
         }
