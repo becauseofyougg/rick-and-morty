@@ -6,6 +6,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
+    "types": ["node"]
   },
-  "lib": ["es2015"]
+  "lib": ["es2015"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
