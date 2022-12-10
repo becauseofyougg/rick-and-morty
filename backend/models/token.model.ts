@@ -1,4 +1,5 @@
-const {Schema, model} = require('mongoose')
+// @ts-ignore
+const { Schema, model } = require('mongoose')
 
 const TokenSchema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'User'},

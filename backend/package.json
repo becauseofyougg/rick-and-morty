@@ -2,9 +2,9 @@
   "name": "rick-and-morty",
   "version": "1.0.0",
   "description": "backend-for-rick-and-morty-app",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.ts"
   },
   "keywords": [
     "rick-and-morty"
@@ -22,5 +22,11 @@
     "mongodb": "^4.12.1",
     "mongoose": "^6.7.3",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.13",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
   }
 }
