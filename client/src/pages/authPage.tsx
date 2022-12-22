@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
-import Button from './button';
+import Button from '../components/button';
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();  
@@ -17,11 +17,12 @@ const Auth: React.FC = () => {
   const [textError, setTextError] = useState('invalid field');
   const [checked, setChecked] = useState(false);
 
+  const query = useLocation();
+  const isSignup = query.search.includes('signup')
+
   const handleCheck = () => {
     setChecked(!checked);
   };
-  const query = useLocation();
-  const isSignup = query.search.includes('signup')
 
   useEffect(() => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

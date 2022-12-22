@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "~/components/navbar";
+import Pagination from "~/components/pagination";
 import apiReqs from "../api-client/api-reqs";
-import Navbar from "./navbar";
-import Pagination from "./pagination";
 
 const HomePage = () => {
-  const [characters, setCharacters] = useState(null)
   const navigate = useNavigate()
-
+  const [characters, setCharacters] = useState(null)
   const [loading, setLoading] = useState<boolean>(false);
   const [isPrev, setIsPrev] = useState<string>('')
   const [isNext, setIsNext] = useState<string>('')
@@ -18,15 +17,14 @@ const HomePage = () => {
     setIsPrev(resp.data.info.prev)
     await setCharacters(resp.data.results)
   }
+
   const getAllCharacters =  async () => {
     try{
     const resp  = await apiReqs.getAllCharacters()   
     setPageData(resp)
   } catch (error) {
     console.log(error)
-  }
-
-  }
+  }}
 
   const goToPrevPage = async () => {
     try{
@@ -34,17 +32,15 @@ const HomePage = () => {
     setPageData(resp)
   } catch (error) {
     console.log(error)
-  }
+  }}
 
-  }
   const goToNextPage = async () => {
     try{
     const resp = await apiReqs.getPageWithCharacters(isNext)
     setPageData(resp)
   } catch (error) {
     console.log(error)
-  }
-  }
+  }}
 
   useEffect( () => {
     setLoading(true)

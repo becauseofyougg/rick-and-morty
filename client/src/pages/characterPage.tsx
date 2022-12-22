@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import urls  from "../api-client/urls";
 import axios from "axios";
-import Button from "./button";
+import Button from "~/components/button";
 
 const Character = () => {
   const navigate = useNavigate();

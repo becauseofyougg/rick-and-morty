@@ -2,9 +2,9 @@
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Auth from "./components/auth";
-import Character from "./components/character";
-import HomePage from "./components/homePage";
+import Auth from "./pages/authPage";
+import Character from "./pages/characterPage";
+import HomePage from "./pages/homePage";
 import { userStore } from "./stores";
 
 export function App() {
