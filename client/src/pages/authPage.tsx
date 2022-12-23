@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
 import Button from '../components/button';
 
-const Auth: React.FC = () => {
+const AuthPage: React.FC = () => {
   const navigate = useNavigate();  
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -210,4 +210,4 @@ const Auth: React.FC = () => {
   );
 };
 
-export default observer(Auth);
+export default observer(AuthPage);

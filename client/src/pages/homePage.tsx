@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "~/components/navbar";
-import Pagination from "~/components/pagination";
+import Navbar from "../components/navbar";
+import Pagination from "../components/pagination";
 import apiReqs from "../api-client/api-reqs";
 
 const HomePage = () => {

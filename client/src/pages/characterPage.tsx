@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import urls  from "../api-client/urls";
 import axios from "axios";
-import Button from "~/components/button";
+import Button from "../components/button";
 
-const Character = () => {
+const CharacterPage = () => {
   const navigate = useNavigate();
   const { id } = useParams()
   const [character, setCharacter] = useState(null)
@@ -49,4 +49,4 @@ const Character = () => {
   );
 }
 
-export default Character;
+export default CharacterPage;

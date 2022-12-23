@@ -2,8 +2,8 @@
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Auth from "./pages/authPage";
-import Character from "./pages/characterPage";
+import AuthPage from "./pages/authPage";
+import CharacterPage from "./pages/characterPage";
 import HomePage from "./pages/homePage";
 import { userStore } from "./stores";
 
@@ -18,8 +18,8 @@ export function App() {
   return (
     <Routes>
       <Route path='/' element={<HomePage />} />
-      <Route path='/auth' element={<Auth />} />
-      <Route path='/character/:id' element={<Character />} />
+      <Route path='/auth' element={<AuthPage />} />
+      <Route path='/character/:id' element={<CharacterPage />} />
     </Routes>
   );
 }
