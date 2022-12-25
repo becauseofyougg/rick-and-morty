@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import urls  from "../api-client/urls";
 import axios from "axios";
 import Button from "../components/button";
+import { observer } from "mobx-react";
 
 const CharacterPage = () => {
   const navigate = useNavigate();
@@ -49,4 +50,4 @@ const CharacterPage = () => {
   );
 }
 
-export default CharacterPage;
+export default observer(CharacterPage);
