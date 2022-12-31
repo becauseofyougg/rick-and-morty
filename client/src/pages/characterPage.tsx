@@ -10,8 +10,10 @@ const CharacterPage = () => {
   const { id } = useParams()
   const [character, setCharacter] = useState(null)
   const [location, setLocation] = useState(null)
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getOneCharacter =  async () => {
+    setLoading(true)
     try {
     const respCharacater = await axios.get(`${urls.RICK_AND_MORTY_URL}/character/${id}`);
     await setCharacter([respCharacater.data])
@@ -20,6 +22,8 @@ const CharacterPage = () => {
     setLocation(respLocation.data)
   } catch (error) {
     console.log(error)
+  } finally {
+    setLoading(false)
   }
   }
   
@@ -33,7 +37,7 @@ const CharacterPage = () => {
         <Button text={"Back"}  />
         </div>
       
-      {character && location && character.map((character) => {
+      {!(character && location && !loading) ? <h2>Loading ...</h2> : character.map((character) => {
         return (
           <div key={character.id} className='flex flex-col gap-4 text-lg p-10 border-double border-4 border-sky-500 rounded-xl bg-white'>
             <div>Name: {character.name}</div>
