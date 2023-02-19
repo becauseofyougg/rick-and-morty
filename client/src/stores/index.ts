@@ -1,7 +1,5 @@
 import UserStore from './userStore';
 
-const userStore = new UserStore()
+const userStore = new UserStore();
 
-export {
-    userStore
-}
+export { userStore };

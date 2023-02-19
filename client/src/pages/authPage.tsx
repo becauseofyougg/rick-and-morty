@@ -5,7 +5,7 @@ import { userStore } from '../stores';
 import Button from '../components/button';
 
 const AuthPage: React.FC = () => {
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [text, setText] = useState('');
@@ -18,7 +18,7 @@ const AuthPage: React.FC = () => {
   const [checked, setChecked] = useState(false);
 
   const query = useLocation();
-  const isSignup = query.search.includes('signup')
+  const isSignup = query.search.includes('signup');
 
   const handleCheck = () => {
     setChecked(!checked);
@@ -40,12 +40,12 @@ const AuthPage: React.FC = () => {
   const passHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 13) {
-        setPasswordError('password error');
+      setPasswordError('password error');
       if (!e.target.value) {
         setPasswordError('password error');
       }
     } else {
-        setPasswordError('');
+      setPasswordError('');
     }
   };
 
@@ -87,57 +87,54 @@ const AuthPage: React.FC = () => {
   };
 
   const registration = async () => {
-    try{
-    const res = await userStore.register(email,password,text)
-    if(checked) {
-      sessionStorage.setItem('email', res.data.user.email)
-      sessionStorage.setItem('bio', res.data.user.bio)
+    try {
+      const res = await userStore.register(email, password, text);
+      if (checked) {
+        localStorage.setItem('email', res.data.user.email);
+        localStorage.setItem('bio', res.data.user.bio);
+      }
+      if (res.status) {
+        let path = `/`;
+        await navigate(path);
+      }
+    } catch (error) {
+      console.log(error);
     }
-    if(res.status) {
-      let path = `/`; 
-      await navigate(path); 
-    }
-  } catch (error) {
-    console.log(error)
-  }
-  }
+  };
 
   const login = async () => {
     try {
-      const res = await userStore.login(email,password)
-      if(checked) {
-        sessionStorage.setItem('email', res.data.user.email)
-        sessionStorage.setItem('bio', res.data.user.bio)
+      const res = await userStore.login(email, password);
+      if (checked) {
+        localStorage.setItem('email', res.data.user.email);
+        localStorage.setItem('bio', res.data.user.bio);
       }
-      if(res.status) {
-        let path = `/`; 
-        await navigate(path); 
+      if (res.status) {
+        let path = `/`;
+        await navigate(path);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    checkSubmit()
+    checkSubmit();
     try {
-      isSignup 
-      ? await registration()
-      : await login()  
+      isSignup ? await registration() : await login();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      resetForm()
+      resetForm();
     }
   };
 
   return (
-    <div className='w-full h-screen flex items-center bg-slate-300'>
-    <div className="w-full sm:w-full flex justify-center">
-      <div className="shadow-lg rounded-[30px] p-10 sm:p-4  max-w-2xl w-full bg-white flex flex-col gap-5">
-        <form action="" onSubmit={handleSubmit}>         
+    <div className="w-full h-screen flex items-center bg-slate-300">
+      <div className="w-full sm:w-full flex justify-center">
+        <div className="shadow-lg rounded-[30px] p-10 sm:p-4  max-w-2xl w-full bg-white flex flex-col gap-5">
+          <form action="" onSubmit={handleSubmit}>
             <div className="text-left sm:mt-[10px] text-[30px] sm:text-[24px] font-medium mb-5 text-gray-900 mt-[2px]">
               {isSignup ? 'Sign up' : 'Log in'}
             </div>
@@ -149,7 +146,9 @@ const AuthPage: React.FC = () => {
                 onChange={changeEmail}
                 onBlur={blurHandler}
                 name="email"
-                className={`w-full pl-4 rounded md:pl-[22px] py-[12px] border border-gray-400 placeholder-gray-400 resize-none bg-white ${emailError !== '' && emailDirty ? 'text-red-500' : ''}`}
+                className={`w-full pl-4 rounded md:pl-[22px] py-[12px] border border-gray-400 placeholder-gray-400 resize-none bg-white ${
+                  emailError !== '' && emailDirty ? 'text-red-500' : ''
+                }`}
                 type="email"
                 placeholder={'Enter email'}
               />
@@ -158,54 +157,54 @@ const AuthPage: React.FC = () => {
               </div>
             </div>
 
-          <div className="w-full flex flex-col justify-between">
-            <div className="w-full flex flex-col">
-              <label className="mb-2 text-gray-700">{'password'}</label>
-              <input
-                value={password}
-                onChange={passHandler}
-                onBlur={blurHandler}
-                name="password"
-                type='password'
-                className={`w-full pl-4 md:pl-[22px] py-[12px] border border-gray-400 rounded placeholder-gray-400 bg-white ${
-                  'rounded'
-                }  ${passwordError !== '' && passwordDirty ? 'text-red-500' : ''}`}
-                placeholder={'Enter password'}
-              />
-              <div className="text-lg text-red-600 h-8 mt-1">
-                {passwordDirty && passwordError && passwordError}
+            <div className="w-full flex flex-col justify-between">
+              <div className="w-full flex flex-col">
+                <label className="mb-2 text-gray-700">{'password'}</label>
+                <input
+                  value={password}
+                  onChange={passHandler}
+                  onBlur={blurHandler}
+                  name="password"
+                  type="password"
+                  className={`w-full pl-4 md:pl-[22px] py-[12px] border border-gray-400 rounded placeholder-gray-400 bg-white ${'rounded'}  ${
+                    passwordError !== '' && passwordDirty ? 'text-red-500' : ''
+                  }`}
+                  placeholder={'Enter password'}
+                />
+                <div className="text-lg text-red-600 h-8 mt-1">
+                  {passwordDirty && passwordError && passwordError}
+                </div>
               </div>
-            </div>
 
-            {isSignup && <div
-              className={`rounded md:mb-[24px] sm:mb-[30px] mt-5 w-full flex-col `}
-            >
-              <label className="text-gray-700">{'Biography'}</label>
-              <textarea
-                onChange={textHandler}
-                value={text}
-                onBlur={blurHandler}
-                name="text"
-                className={`mt-2 rounded resize-none pl-4 md:pl-[22px] placeholder-gray-400  border border-gray-400 w-full ${
-                  textError !== '' && textDirty ? 'text-red-500' : ''
-                }`}
-                rows={6}
-                placeholder={'Tell us about yourself'}
-              />
-              <div className="text-lg text-red-600 h-8">
-                {emailDirty && textError && textError}
-              </div>
-            </div>}
-          </div>
+              {isSignup && (
+                <div className={`rounded md:mb-[24px] sm:mb-[30px] mt-5 w-full flex-col `}>
+                  <label className="text-gray-700">{'Biography'}</label>
+                  <textarea
+                    onChange={textHandler}
+                    value={text}
+                    onBlur={blurHandler}
+                    name="text"
+                    className={`mt-2 rounded resize-none pl-4 md:pl-[22px] placeholder-gray-400  border border-gray-400 w-full ${
+                      textError !== '' && textDirty ? 'text-red-500' : ''
+                    }`}
+                    rows={6}
+                    placeholder={'Tell us about yourself'}
+                  />
+                  <div className="text-lg text-red-600 h-8">
+                    {emailDirty && textError && textError}
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="text-lg text-red-600 h-8">{userStore.authError}</div>
-        </form>
-        <label>
-          <input type="checkbox" checked={checked} onChange={handleCheck}/>
-            <span className='ml-4'>Remember me</span>
-        </label>
-        <Button onClick={handleSubmit} text={isSignup ? 'Sign up' : 'Log in'} />
-      </div>   
-    </div>
+          </form>
+          <label>
+            <input type="checkbox" checked={checked} onChange={handleCheck} />
+            <span className="ml-4">Remember me</span>
+          </label>
+          <Button onClick={handleSubmit} text={isSignup ? 'Sign up' : 'Log in'} />
+        </div>
+      </div>
     </div>
   );
 };
