@@ -5,7 +5,7 @@ import { IUser } from '../types/api';
 import apiReqs from '../api-client/api-reqs';
 
 export default class UserStore {
-  @observable user = {} as IUser;
+  @observable user: IUser = null;
   @observable isAuth = false;
   @observable isLoading = false;
   @observable authError = '';
@@ -24,7 +24,7 @@ export default class UserStore {
     this.authError = data;
   }
 
-  @action setUser(user) {
+  @action setUser(user: IUser) {
     this.user = user;
   }
 
@@ -62,7 +62,7 @@ export default class UserStore {
       localStorage.removeItem('email');
       localStorage.removeItem('bio');
       this.setAuth(false);
-      this.setUser({});
+      this.setUser(null);
     } catch (error) {
       this.setAuthError(error.response.data.message);
     }
