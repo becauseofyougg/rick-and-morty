@@ -2,7 +2,7 @@ import axios from 'axios';
 import { action, makeAutoObservable, observable } from 'mobx';
 import urls from '../api-client/urls';
 import { IUser } from '../types/api';
-import apiReqs from '../api-client/api-reqs';
+import apiReqs from '../api-client/apiReqs';
 
 export default class UserStore {
   @observable user: IUser = null;

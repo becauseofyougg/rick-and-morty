@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import Pagination from '../components/pagination';
-import apiReqs from '../api-client/api-reqs';
+import apiReqs from '../api-client/apiReqs';
 import { observer } from 'mobx-react';
 import { userStore } from 'src/stores';
 
@@ -38,17 +38,6 @@ const HomePage = () => {
       userStore.toggleLoader(false);
     }
   };
-
-  let var1 = { name: 'Jim' };
-  console.log(var1, new Date().getMilliseconds());
-  let var2 = var1;
-  console.log(var2, new Date().getMilliseconds());
-  var2.name = 'John';
-  var1.name = 'qwe';
-  console.log(var1, new Date().getMilliseconds());
-  // { name: 'John' }
-  console.log(var2, new Date().getMilliseconds());
-  // { name: 'John' }
 
   const goToNextPage = async () => {
     userStore.toggleLoader(true);

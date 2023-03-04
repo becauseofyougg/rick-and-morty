@@ -15,10 +15,14 @@ export default {
   },
   getAllCharacters: async () => {
     const resp = await axios.get(`${urls.RICK_AND_MORTY_URL}/character`);
-    return resp;
+    return resp.data;
   },
-  getPageWithCharacters: async (pageUrl) => {
+  getPageWithCharacters: async (pageUrl:string) => {
     const resp = await axios.get(`${pageUrl}`);
-    return resp;
+    return resp.data;
   },
+  getOneCharacter: async (id:string) => {
+    const resp = await axios.get(`${urls.RICK_AND_MORTY_URL}/character/${id}`);
+    return resp.data;
+  }
 };
