@@ -31,16 +31,16 @@ export default class UserStore {
   @action toggleLoader(state: boolean) {
     this.isLoading = state;
   }
-  //   @action async getAllCharacters() {
-  //     const resp = await apiReqs.getAllCharacters();
-  //     this.setPageData(resp);
-  //   }
+  @action async getAllCharacters() {
+    const resp = await apiReqs.getAllCharacters();
+    this.setPageData(resp);
+  }
 
-  //   @action setPageData(resp) {
-  //     console.log(resp.data.info);
-  //     this.navigation = resp.data.info;
-  //     this.characters = resp.data.results;
-  //   }
+  @action setPageData(resp) {
+    console.log(resp.data.info);
+    this.navigation = resp.data.info;
+    this.characters = resp.data.results;
+  }
 
   @action
   async login(email: string, password: string) {
