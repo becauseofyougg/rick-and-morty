@@ -20,12 +20,12 @@ const Navbar: React.FC = () => {
   };
 
   const logOut = async () => {
-    await userStore.logout();
+    await userStore.handleLogout();
   };
 
   useEffect(() => {
     const sesStoreBio = localStorage.getItem('bio');
-    setBio(sesStoreBio);
+    sesStoreBio && setBio(sesStoreBio);
   }, []);
 
   return (
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
     >
       <div className="w-full md:h-20 py-6 flex md:flex-row flex-col justify-between z-40">
         <div className="md:h-full w-full flex gap-10 justify-between md:justify-end items-center relative">
-          {userStore.user.email != null && (
+          {userStore.user?.email != null && (
             <span>Your name is {userStore.user?.email?.split('@')[0]}</span>
           )}
           {localStorage.getItem('bio') !== null && (

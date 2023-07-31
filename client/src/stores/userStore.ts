@@ -2,10 +2,10 @@ import axios from 'axios';
 import { action, makeAutoObservable, observable } from 'mobx';
 import urls from '../api-client/urls';
 import { IUser } from '../types/api';
-import apiReqs from '../api-client/api-reqs';
+import { getAllCharacters, login, logout, register } from '../api-client/apiReqs';
 
 export default class UserStore {
-  @observable user = {} as IUser;
+  @observable user: IUser | null = null;
   @observable isAuth = false;
   @observable isLoading = false;
   @observable authError = '';
@@ -24,58 +24,58 @@ export default class UserStore {
     this.authError = data;
   }
 
-  @action setUser(user) {
+  @action setUser(user: IUser | null) {
     this.user = user;
   }
 
   @action toggleLoader(state: boolean) {
     this.isLoading = state;
   }
-  //   @action async getAllCharacters() {
-  //     const resp = await apiReqs.getAllCharacters();
-  //     this.setPageData(resp);
-  //   }
+  @action async handleGetAllCharacters() {
+    const resp = await getAllCharacters();
+    this.setPageData(resp);
+  }
 
-  //   @action setPageData(resp) {
-  //     console.log(resp.data.info);
-  //     this.navigation = resp.data.info;
-  //     this.characters = resp.data.results;
-  //   }
+  @action setPageData(resp: any) {
+    console.log(resp.data.info);
+    this.navigation = resp.data.info;
+    this.characters = resp.data.results;
+  }
 
   @action
-  async login(email: string, password: string) {
+  async handleLogin(email: string, password: string) {
     try {
-      const response = await apiReqs.login(email, password);
+      const response = await login(email, password);
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
       return response;
-    } catch (error) {
+    } catch (error: any) {
       this.setAuthError(error.response.data.message);
     }
   }
 
-  @action async logout() {
+  @action async handleLogout() {
     try {
-      await apiReqs.logout();
+      await logout();
       localStorage.removeItem('token');
       localStorage.removeItem('email');
       localStorage.removeItem('bio');
       this.setAuth(false);
-      this.setUser({});
-    } catch (error) {
+      this.setUser(null);
+    } catch (error: any) {
       this.setAuthError(error.response.data.message);
     }
   }
 
-  @action async register(email: string, password: string, bio: string) {
+  @action async handleRegister(email: string, password: string, bio: string) {
     try {
-      const response = await apiReqs.register(email, password, bio);
+      const response = await register(email, password, bio);
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
       return response;
-    } catch (error) {
+    } catch (error: any) {
       this.setAuthError(error.response.data.message);
     }
   }
@@ -87,7 +87,7 @@ export default class UserStore {
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
-    } catch (error) {
+    } catch (error: any) {
       this.setAuthError(error.response.data.message);
     } finally {
       this.toggleLoader(false);

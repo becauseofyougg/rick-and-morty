@@ -88,12 +88,12 @@ const AuthPage: React.FC = () => {
 
   const registration = async () => {
     try {
-      const res = await userStore.register(email, password, text);
+      const res = await userStore.handleRegister(email, password, text);
       if (checked) {
-        localStorage.setItem('email', res.data.user.email);
-        localStorage.setItem('bio', res.data.user.bio);
+        localStorage.setItem('email', res?.data.user.email);
+        localStorage.setItem('bio', res?.data.user.bio);
       }
-      if (res.status) {
+      if (res?.status) {
         let path = `/`;
         await navigate(path);
       }
@@ -104,12 +104,12 @@ const AuthPage: React.FC = () => {
 
   const login = async () => {
     try {
-      const res = await userStore.login(email, password);
+      const res = await userStore.handleLogin(email, password);
       if (checked) {
-        localStorage.setItem('email', res.data.user.email);
-        localStorage.setItem('bio', res.data.user.bio);
+        localStorage.setItem('email', res?.data.user.email);
+        localStorage.setItem('bio', res?.data.user.bio);
       }
-      if (res.status) {
+      if (res?.status) {
         let path = `/`;
         await navigate(path);
       }

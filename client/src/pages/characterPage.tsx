@@ -4,21 +4,22 @@ import urls from '../api-client/urls';
 import axios from 'axios';
 import Button from '../components/button';
 import { observer } from 'mobx-react';
+import { getOneCharacter } from '../api-client/apiReqs';
 
 const CharacterPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [character, setCharacter] = useState(null);
-  const [location, setLocation] = useState(null);
+  const [character, setCharacter] = useState<any>(null);
+  const [location, setLocation] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const getOneCharacter = async () => {
+  const handleGetOneCharacter = async () => {
     setLoading(true);
     try {
-      const respCharacater = await axios.get(`${urls.RICK_AND_MORTY_URL}/character/${id}`);
-      await setCharacter([respCharacater.data]);
-      const locationNumber = respCharacater.data.location.url.substring(
-        respCharacater.data.location.url.indexOf('/location/') + 10
+      const respCharacater = await getOneCharacter(id as string);
+      await setCharacter([respCharacater] as any);
+      const locationNumber = respCharacater.location.url.substring(
+        respCharacater.location.url.indexOf('/location/') + 10
       );
       const respLocation = await axios.get(
         `${urls.RICK_AND_MORTY_URL}/location/${+locationNumber}`
@@ -32,7 +33,7 @@ const CharacterPage = () => {
   };
 
   useEffect(() => {
-    getOneCharacter();
+    handleGetOneCharacter();
   }, []);
 
   return (
@@ -44,7 +45,7 @@ const CharacterPage = () => {
       {!(character && location && !loading) ? (
         <h2>Loading ...</h2>
       ) : (
-        character.map((character) => {
+        character.map((character: any) => {
           return (
             <div
               key={character.id}

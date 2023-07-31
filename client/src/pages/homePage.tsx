@@ -2,25 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import Pagination from '../components/pagination';
-import apiReqs from '../api-client/api-reqs';
 import { observer } from 'mobx-react';
-import { userStore } from 'src/stores';
+import { getAllCharacters, getPageWithCharacters } from '../api-client/apiReqs';
+import { userStore } from '../stores';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [characters, setCharacters] = useState(null);
+  const [characters, setCharacters] = useState<any>(null);
   const [isPrev, setIsPrev] = useState<string>('');
   const [isNext, setIsNext] = useState<string>('');
 
-  const setPageData = (resp) => {
-    setIsNext(resp.data.info.next);
-    setIsPrev(resp.data.info.prev);
-    setCharacters(resp.data.results);
+  const setPageData = async (resp: any) => {
+    await setIsNext(resp.info.next);
+    await setIsPrev(resp.info.prev);
+    await setCharacters(resp.results);
   };
 
-  const getAllCharacters = async () => {
+  const handleGetAllCharacters = async () => {
     try {
-      const resp = await apiReqs.getAllCharacters();
+      const resp = await getAllCharacters();
+      console.log(resp);
       setPageData(resp);
     } catch (error) {
       console.log(error);
@@ -30,7 +31,7 @@ const HomePage = () => {
   const goToPrevPage = async () => {
     userStore.toggleLoader(true);
     try {
-      const resp = await apiReqs.getPageWithCharacters(isPrev);
+      const resp = await getPageWithCharacters(isPrev);
       setPageData(resp);
     } catch (error) {
       console.log(error);
@@ -39,21 +40,10 @@ const HomePage = () => {
     }
   };
 
-  let var1 = { name: 'Jim' };
-  console.log(var1, new Date().getMilliseconds());
-  let var2 = var1;
-  console.log(var2, new Date().getMilliseconds());
-  var2.name = 'John';
-  var1.name = 'qwe';
-  console.log(var1, new Date().getMilliseconds());
-  // { name: 'John' }
-  console.log(var2, new Date().getMilliseconds());
-  // { name: 'John' }
-
   const goToNextPage = async () => {
     userStore.toggleLoader(true);
     try {
-      const resp = await apiReqs.getPageWithCharacters(isNext);
+      const resp = await getPageWithCharacters(isNext);
       setPageData(resp);
     } catch (error) {
       console.log(error);
@@ -65,7 +55,7 @@ const HomePage = () => {
   useEffect(() => {
     userStore.toggleLoader(true);
     try {
-      getAllCharacters();
+      handleGetAllCharacters();
     } catch (err) {
       console.log(err);
     } finally {
@@ -81,20 +71,21 @@ const HomePage = () => {
           <h2>Loading ...</h2>
         ) : (
           <>
-            {characters?.map((character) => {
-              return (
-                <div
-                  key={character.id}
-                  className="p-5 rounded-lg border-rose-500 border-2 hover:scale-105"
-                  onClick={() => {
-                    navigate(`/character/${character.id}`);
-                  }}
-                >
-                  <div>{character.name}</div>
-                  <img src={character.image} alt={character.name} />
-                </div>
-              );
-            })}
+            {characters &&
+              characters.map((character: any) => {
+                return (
+                  <div
+                    key={character.id}
+                    className="p-5 rounded-lg border-rose-500 border-2 hover:scale-105"
+                    onClick={() => {
+                      navigate(`/character/${character.id}`);
+                    }}
+                  >
+                    <div>{character.name}</div>
+                    <img src={character.image} alt={character.name} />
+                  </div>
+                );
+              })}
           </>
         )}
       </div>
