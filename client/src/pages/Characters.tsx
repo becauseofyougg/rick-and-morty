@@ -2,22 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import urls from '../api-client/urls';
 import axios from 'axios';
-import Button from '../components/button';
+import Button from '../shared/ui/button';
 import { observer } from 'mobx-react';
 import { getOneCharacter } from '../api-client/apiReqs';
+import { SingleCharacterInfo } from 'types/api';
 
 const CharacterPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [character, setCharacter] = useState<any>(null);
+  const [character, setCharacter] = useState<SingleCharacterInfo[] | null>(null);
   const [location, setLocation] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleGetOneCharacter = async () => {
     setLoading(true);
     try {
-      const respCharacater = await getOneCharacter(id as string);
-      await setCharacter([respCharacater] as any);
+      if (!id) return;
+      const respCharacater: SingleCharacterInfo = await getOneCharacter(id);
+      setCharacter([respCharacater]);
       const locationNumber = respCharacater.location.url.substring(
         respCharacater.location.url.indexOf('/location/') + 10
       );
@@ -26,7 +28,7 @@ const CharacterPage = () => {
       );
       setLocation(respLocation.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }

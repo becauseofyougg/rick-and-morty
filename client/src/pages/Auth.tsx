@@ -2,20 +2,20 @@ import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
-import Button from '../components/button';
+import Button from '../shared/ui/button';
 
 const AuthPage: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [text, setText] = useState('');
-  const [emailDirty, setEmailDirty] = useState(false);
-  const [passwordDirty, setPasswordDirty] = useState(false);
-  const [textDirty, setTextDirty] = useState(false);
+  const [emailDirty, setEmailDirty] = useState<boolean>(false);
+  const [passwordDirty, setPasswordDirty] = useState<boolean>(false);
+  const [textDirty, setTextDirty] = useState<boolean>(false);
   const [emailError, setEmailError] = useState('invalid field');
   const [passwordError, setPasswordError] = useState('invalid field');
   const [textError, setTextError] = useState('invalid field');
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
 
   const query = useLocation();
   const isSignup = query.search.includes('signup');
@@ -98,7 +98,7 @@ const AuthPage: React.FC = () => {
         await navigate(path);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -114,7 +114,7 @@ const AuthPage: React.FC = () => {
         await navigate(path);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -124,7 +124,7 @@ const AuthPage: React.FC = () => {
     try {
       isSignup ? await registration() : await login();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       resetForm();
     }

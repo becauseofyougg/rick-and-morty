@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../stores';
-import Button from './button';
+import Button from '../shared/ui/button';
 import { observer } from 'mobx-react';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const [showBio, setShowBio] = useState(false);
-  const [bio, setBio] = useState('');
+  const [showBio, setShowBio] = useState<boolean>(false);
+  const [bio, setBio] = useState<string>('');
 
   const goToSignup = () => {
     let path = `/auth?page=signup`;

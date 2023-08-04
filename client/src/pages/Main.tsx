@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/navbar';
-import Pagination from '../components/pagination';
+import Navbar from '../features/navbar';
+import Pagination from '../features/pagination';
 import { observer } from 'mobx-react';
 import { getAllCharacters, getPageWithCharacters } from '../api-client/apiReqs';
 import { userStore } from '../stores';
+import { AllCharacters, SingleCharacterInfo } from 'types/api';
 
-const HomePage = () => {
+const MainPage = () => {
   const navigate = useNavigate();
-  const [characters, setCharacters] = useState<any>(null);
-  const [isPrev, setIsPrev] = useState<string>('');
-  const [isNext, setIsNext] = useState<string>('');
+  const [characters, setCharacters] = useState<SingleCharacterInfo[] | null>(null);
+  const [isPrev, setIsPrev] = useState<string | null>('');
+  const [isNext, setIsNext] = useState<string | null>('');
 
-  const setPageData = async (resp: any) => {
+  const setPageData = async (resp: AllCharacters) => {
     await setIsNext(resp.info.next);
     await setIsPrev(resp.info.prev);
     await setCharacters(resp.results);
@@ -31,6 +32,7 @@ const HomePage = () => {
   const goToPrevPage = async () => {
     userStore.toggleLoader(true);
     try {
+      if (!isPrev) return;
       const resp = await getPageWithCharacters(isPrev);
       setPageData(resp);
     } catch (error) {
@@ -43,10 +45,11 @@ const HomePage = () => {
   const goToNextPage = async () => {
     userStore.toggleLoader(true);
     try {
+      if (!isNext) return;
       const resp = await getPageWithCharacters(isNext);
       setPageData(resp);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       userStore.toggleLoader(false);
     }
@@ -57,7 +60,7 @@ const HomePage = () => {
     try {
       handleGetAllCharacters();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       userStore.toggleLoader(false);
     }
@@ -101,4 +104,4 @@ const HomePage = () => {
   );
 };
 
-export default observer(HomePage);
+export default observer(MainPage);

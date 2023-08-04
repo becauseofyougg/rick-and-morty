@@ -1,9 +1,7 @@
 import React, { FC, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import AuthPage from './pages/authPage';
-import CharacterPage from './pages/characterPage';
-import HomePage from './pages/homePage';
+
 import { userStore } from './stores';
+import RouterTree from 'routes/RouterTree';
 
 export const App: FC = () => {
   useEffect(() => {
@@ -12,13 +10,7 @@ export const App: FC = () => {
     }
   }, []);
 
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/character/:id" element={<CharacterPage />} />
-    </Routes>
-  );
+  return <RouterTree />;
 };
 
 export default App;

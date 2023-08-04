@@ -6,9 +6,9 @@ import { getAllCharacters, login, logout, register } from '../api-client/apiReqs
 
 export default class UserStore {
   @observable user: IUser | null = null;
-  @observable isAuth = false;
-  @observable isLoading = false;
-  @observable authError = '';
+  @observable isAuth: boolean = false;
+  @observable isLoading: boolean = false;
+  @observable authError: string = '';
   @observable characters = null;
   @observable navigation = null;
 
